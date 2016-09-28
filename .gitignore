@@ -1,0 +1,18 @@
+#Editors configuration files
+.classpath
+.project
+.settings
+.springBeans
+*.sublime-project
+*.sublime-workspace
+
+#General generated files
+**.log
+**.swp
+
+#Project specific generated files
+target/
+typings/
+node_modules/
+app/**/*.js
+app/**/*.js.map

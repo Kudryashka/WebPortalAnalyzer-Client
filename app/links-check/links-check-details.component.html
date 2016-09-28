@@ -1,0 +1,24 @@
+<div *ngIf='details'>
+	<table class="table table-striped">
+		<caption>Детальна інформація для перевірки з ідентифікатором {{details.id}}</caption>
+		<thead>
+			<th>Статус посилання</th>
+			<th>Тип</th>
+			<th>Знаходження</th>
+			<th>Адреса посилання</th>
+			<th>Код відгуку</th>
+			<th>Адреса перенаправлення</th>
+		</thead>
+		<tbody>
+			<tr *ngFor="let link of details.links">
+				<td>{{link.status}}</td>
+				<td>{{link.type}}</td>
+				<td>{{link.location}}</td>
+				<td>{{link.target}}</td>
+				<td>{{link.responseCode}}</td>
+				<td>{{link.redirectUrl}}</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<p *ngIf='!details'>Немає даних для відображення</p>
