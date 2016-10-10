@@ -1,20 +1,38 @@
 <div class="row" class="container-fluid">
 	<div class="container col-md-6">
-		<h2 class="page-header">Налаштування</h2>
-		<div *ngIf="settings">
+		<h2 class="page-header">Локальні налаштування</h2>
+		<div *ngIf="localSettings">
 			<table class="table table-striped">
 				<thead>
 					<th>Назва налаштування</th>
 					<th>Встановлене значення</th>
 				</thead>
 				<tbody>
-					<tr *ngFor="let s of settings">
+					<tr *ngFor="let s of localSettings">
+						<td>{{s.label}}</td>
+						<td>{{s.value}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<p *ngIf="!localSettings">Немає налаштувань для відображення</p>
+	</div>
+	<div class="container col-md-6">
+		<h2 class="page-header">Глобальні налаштування</h2>
+		<div *ngIf="globalSettings">
+			<table class="table table-striped">
+				<thead>
+					<th>Назва налаштування</th>
+					<th>Встановлене значення</th>
+				</thead>
+				<tbody>
+					<tr *ngFor="let s of globalSettings">
 						<td>{{s.name}}</td>
 						<td>{{s.value}}</td>
 					</tr>
 				</tbody>
 			</table>
 		</div>
-		<p *ngIf="!settings">Немає налаштувань для відображення</p>
+		<p *ngIf="!globalSettings">Немає налаштувань для відображення</p>
 	</div>
 </div>

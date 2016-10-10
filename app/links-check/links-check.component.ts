@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { RuleType } from '../schedule/rule-type';
 import { RULE_TYPES } from '../schedule/rule-types';
@@ -6,15 +6,19 @@ import { DayOfWeek } from '../schedule/day-of-week';
 import { DAYS_OF_WEEK } from '../schedule/days-of-week';
 import { Rule } from '../schedule/rule';
 import { SchedulerService } from '../schedule/scheduler-service';
+import { LinksCheckStatus } from './links-check-status';
 import { LinksCheckService } from './links-check.service';
 import { LinksCheckReport } from './links-check-report';
 import { AuthenticationService } from '../authentication/authentication.service';
+import { SettingsService } from '../settings/settings.service';
 
 @Component({
 	selector: 'links-check',
 	templateUrl: 'app/links-check/links-check.component.html'
 })
-export class LinksCheckComponent implements OnInit {
+export class LinksCheckComponent implements OnInit, OnDestroy {
+
+	currentServiceStatus: string = "Невідомий";
 
 	ruleTypes: RuleType[];
 	daysOfWeek: DayOfWeek[];
@@ -35,8 +39,13 @@ export class LinksCheckComponent implements OnInit {
 		details: []
 	}
 
+	//Timeouts
+	updateServiceStatusInterval: any;
+
 	constructor(private schedulerService: SchedulerService, 
-		private linksCheckService: LinksCheckService, private authenticationService: AuthenticationService) {}
+		private linksCheckService: LinksCheckService, 
+		private authenticationService: AuthenticationService,
+		private settingsService: SettingsService) {}
 
 	ngOnInit() {
 		this.authenticationService.checkAuthorization();
@@ -52,9 +61,30 @@ export class LinksCheckComponent implements OnInit {
 			active: undefined
 		}
 
+		this.updateServiceStatus();
 		this.updateScheduledRules();
-
 		this.updateReport();
+
+		//Start autoupdates
+		let updateServiceIntervalSec = Number(this.settingsService
+			.getLocalSettingByName('CHECK_LINKS_SERVICE_STATUS_UPDATE_INTERVAL').value);
+		if (updateServiceIntervalSec) {
+			this.updateServiceStatusInterval = setInterval(
+				() => {this.updateServiceStatus()}, 1000 * updateServiceIntervalSec);
+		}
+	}
+
+	ngOnDestroy() {
+		//Stop autoupdates
+		clearInterval(this.updateServiceStatusInterval);
+	}
+
+	updateServiceStatus() {
+		this.linksCheckService.getStatus()
+			.then(status => this.currentServiceStatus = status.status)
+			.catch(error => {
+				this.currentServiceStatus = 'Невідомий';
+				console.log(error)});
 	}
 
 	updateScheduledRules() {

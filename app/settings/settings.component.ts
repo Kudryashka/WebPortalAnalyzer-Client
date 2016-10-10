@@ -10,19 +10,27 @@ import {AuthenticationService} from '../authentication/authentication.service';
 })
 export class SettingsComponent implements OnInit {
 
-	settings: Setting[] = [];
+	localSettings: Setting[];
+	globalSettings: Setting[];
 
 	constructor(private settingService: SettingsService,
 		private authenticationService: AuthenticationService) {}
 
 	ngOnInit() {
 		this.authenticationService.checkAuthorization();
-		this.updateSettings();
+		this.loadLocalSettings();
+		this.loadGlobalSettings();
 	}
 
-	updateSettings() {
-		this.settingService.getAllSettings()
-			.then(settings => this.settings = settings)
+	loadLocalSettings() {
+		this.settingService.getLocalSettings()
+			.then(settings => this.localSettings = settings)
+			.catch(this.handleError);
+	}
+
+	loadGlobalSettings() {
+		this.settingService.getGlobalSettings()
+			.then(settings => this.globalSettings = settings)
 			.catch(this.handleError);
 	}
 

@@ -8,9 +8,29 @@ import {SETTINGS_URL} from '../config/config';
 @Injectable()
 export class SettingsService {
 
+	private localSettings: Setting[] = [
+		{
+			name: 'CHECK_LINKS_SERVICE_STATUS_UPDATE_INTERVAL',
+			label: 'Інтервал оновлення статусу сервісу перевірки посилань (сек)',
+			value: '10'
+		}
+	];
+
 	constructor(private http: Http) {}
 
-	getAllSettings() {
+	getLocalSettings() {
+		return Promise.resolve(this.localSettings);
+	}
+
+	getLocalSettingByName(name: string) {
+		let index = this.localSettings.map(s => s.name).indexOf(name);
+		if (index >= 0) {
+			return this.localSettings[index];
+		}
+		return null;
+	}
+
+	getGlobalSettings() {
 		let url = `${SETTINGS_URL}`;
 		return this.http.get(url, {withCredentials: true}).toPromise()
 			.then(settings => settings.json() as Setting[])

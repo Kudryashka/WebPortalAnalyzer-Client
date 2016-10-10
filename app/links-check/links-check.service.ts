@@ -10,6 +10,7 @@ import {
 	REST_LINKS_CHECK_GET_DETAILS_URL
 } from '../config/config';
 
+import { LinksCheckStatus } from './links-check-status';
 import { LinksCheckReport, LinksCheckDetails } from './links-check-report';
 import { AuthenticationService } from '../authentication/authentication.service';
 
@@ -17,6 +18,14 @@ import { AuthenticationService } from '../authentication/authentication.service'
 export class LinksCheckService {
 
 	constructor(private http: Http, private authenticationService: AuthenticationService){}
+
+	public getStatus() {
+		return this.http.get(REST_LINKS_CHECK_STATUS_URL, 
+			{withCredentials: true})
+				.toPromise()
+				.then(status => status.json() as LinksCheckStatus)
+				.catch(this.handleError);
+	}
 
 	public executeRun() {
 		let headers: Headers = new Headers();
