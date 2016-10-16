@@ -30,13 +30,15 @@ export class LinksCheckService {
 	public executeRun() {
 		let headers: Headers = new Headers();
 		headers.append('Content-Type', 'application/json');
-		this.http.put(REST_LINKS_CHECK_RUN_URL, '', {headers: headers, withCredentials: true}).subscribe();
+		this.http.put(REST_LINKS_CHECK_RUN_URL, '', 
+			{headers: headers, withCredentials: true}).subscribe();
 	}
 
 	public executeStop() {
 		let headers: Headers = new Headers();
 		headers.append('Content-Type', 'application/json');
-		this.http.put(REST_LINKS_CHECK_STOP_URL, '', {headers: headers}).subscribe();
+		this.http.put(REST_LINKS_CHECK_STOP_URL, '', 
+			{headers: headers, withCredentials: true}).subscribe();
 	}
 
 	public getThirtyDaysReport() {
