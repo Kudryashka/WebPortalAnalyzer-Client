@@ -48,35 +48,38 @@ export class LinksCheckComponent implements OnInit, OnDestroy {
 		private settingsService: SettingsService) {}
 
 	ngOnInit() {
-		this.authenticationService.checkAuthorization();
+		if (this.authenticationService.checkAuthorization()) {
+			this.ruleTypes = RULE_TYPES;
+			this.daysOfWeek = DAYS_OF_WEEK;
 
-		this.ruleTypes = RULE_TYPES;
-		this.daysOfWeek = DAYS_OF_WEEK;
+			this.newRule = {
+				type: this.ruleTypes[0],
+				dayOfWeek: this.daysOfWeek[0],
+				hours: undefined,
+				minutes: undefined,
+				active: undefined
+			}
 
-		this.newRule = {
-			type: this.ruleTypes[0],
-			dayOfWeek: this.daysOfWeek[0],
-			hours: undefined,
-			minutes: undefined,
-			active: undefined
-		}
+			this.updateServiceStatus();
+			this.updateScheduledRules();
+			this.updateReport();
 
-		this.updateServiceStatus();
-		this.updateScheduledRules();
-		this.updateReport();
-
-		//Start autoupdates
-		let updateServiceIntervalSec = Number(this.settingsService
-			.getLocalSettingByName('CHECK_LINKS_SERVICE_STATUS_UPDATE_INTERVAL').value);
-		if (updateServiceIntervalSec) {
-			this.updateServiceStatusInterval = setInterval(
-				() => {this.updateServiceStatus()}, 1000 * updateServiceIntervalSec);
+			//Start autoupdates
+			let updateServiceIntervalSec = Number(this.settingsService
+				.getLocalSettingByName('CHECK_LINKS_SERVICE_STATUS_UPDATE_INTERVAL').value);
+			if (updateServiceIntervalSec) {
+				this.updateServiceStatusInterval = setInterval(
+					() => {this.updateServiceStatus()}, 1000 * updateServiceIntervalSec);
+			}
 		}
 	}
 
 	ngOnDestroy() {
 		//Stop autoupdates
-		clearInterval(this.updateServiceStatusInterval);
+		if (this.updateServiceStatusInterval) {
+			clearInterval(this.updateServiceStatusInterval);
+			this.updateServiceStatusInterval = null;
+		}
 	}
 
 	updateServiceStatus() {

@@ -31,5 +31,6 @@ export class AuthenticationService {
 
 	checkAuthorization() {
 		if (!this.authorized) this.router.navigateByUrl('/login');
+		return this.authorized;
 	}
 }

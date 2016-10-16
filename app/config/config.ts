@@ -14,4 +14,4 @@ export const REST_SEARCH_URL = `${REST_API_URL}v1.0/portalEmptySearch/report/`;
 
 export const REST_USER_INFO_URL = `${REST_API_URL}v1.0/portalUsersInfo/report/`;
 
-export const SETTINGS_URL = `${REST_API_URL}v1.0/portalSettings`;
+export const SETTINGS_URL = `${REST_API_URL}v1.1/settings`;

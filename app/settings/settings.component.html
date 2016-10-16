@@ -27,8 +27,9 @@
 				</thead>
 				<tbody>
 					<tr *ngFor="let s of globalSettings">
-						<td>{{s.name}}</td>
-						<td>{{s.value}}</td>
+						<td><p>{{s.label}}</p></td>
+						<td><p>{{s.value}}</p></td>
+						<td><span class="btn btn-default btn-sm glyphicon glyphicon-edit" (click)="editSetting(s)"></span></td>
 					</tr>
 				</tbody>
 			</table>

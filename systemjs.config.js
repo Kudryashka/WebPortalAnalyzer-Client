@@ -19,9 +19,9 @@
 
       'rxjs': 'npm:/rxjs',
 
-      'moment':                     'node_modules/moment/moment.js',
-      'ng2-bootstrap':              'node_modules/ng2-bootstrap/ng2-bootstrap.js',
-      'angular2-google-maps':       'node_modules/angular2-google-maps'
+      'moment':                     'npm:moment/moment.js',
+      'angular2-google-maps':       'npm:angular2-google-maps',
+      '@ng-bootstrap/ng-bootstrap': 'npm:@ng-bootstrap/ng-bootstrap/bundles/ng-bootstrap.js'
     },
 
     packages: {
